@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="username_hint">Type in Username...</string>
+    <string name="login_button">Login</string>
+    <string name="register_button">Register</string>
+    <string name="password_hint">Type in Password...</string>
+    <string name="topText">Login</string>
 </resources>
