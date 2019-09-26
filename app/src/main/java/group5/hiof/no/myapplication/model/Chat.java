@@ -14,6 +14,7 @@ public class Chat {
         this.sender = sender;
         this.receiver = receiver;
         conversation = new ArrayList<>();
+
     }
 
 
