@@ -1,5 +1,6 @@
 package group5.hiof.no.myapplication.model;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class Chat {
@@ -7,10 +8,12 @@ public class Chat {
     private UUID chatID;
     private User sender;
     private User receiver;
+    private ArrayList<Message> conversation;
 
-
-    public Chat() {
-
+    public Chat(User sender, User receiver) {
+        this.sender = sender;
+        this.receiver = receiver;
+        conversation = new ArrayList<>();
     }
 
 
@@ -40,5 +43,13 @@ public class Chat {
 
     public void setReceiver(User receiver) {
         this.receiver = receiver;
+    }
+
+    public ArrayList<Message> getConversation() {
+        return conversation;
+    }
+
+    public void setConversation(ArrayList<Message> conversation) {
+        this.conversation = conversation;
     }
 }
