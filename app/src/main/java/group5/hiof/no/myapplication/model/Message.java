@@ -11,8 +11,11 @@ public class Message {
     private String format;
     private String messageContent;
 
-    public Message() {
-
+    public Message(User sender, User receiver, String format, String content) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.format = format;
+        this.messageContent = content;
     }
 
 
