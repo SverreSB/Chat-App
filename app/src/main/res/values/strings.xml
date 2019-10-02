@@ -11,6 +11,8 @@
     <!-- Strings that will be used as hints in input fields -->
     <string name="username_hint">Type in Username...</string>
     <string name="password_hint">Type in Password...</string>
+    <string name="repeat_password_hint">Repeat Password...</string>
+    <string name="language">Choose language</string>
 
     <!-- Fonts to be used as strings -->
     <string name="icon_arrow_left">&#xf060;</string>
