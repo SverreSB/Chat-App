@@ -21,7 +21,7 @@ public class User {
 
 
     /*
-     * Getters and setters for field variables.
+     *  Getters and setters for field variables.
      */
 
     public UUID getUserID() {

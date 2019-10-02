@@ -20,7 +20,7 @@ public class Message {
 
 
     /*
-     * Getters and setters for field variables
+     *  Getters and setters for field variables
      */
 
     public UUID getMessageID() {
