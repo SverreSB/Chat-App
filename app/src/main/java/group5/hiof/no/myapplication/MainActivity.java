@@ -5,6 +5,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,11 +24,13 @@ public class MainActivity extends AppCompatActivity {
         boolean loggedIn = false;
 
         if(!loggedIn) {
-            //startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
 
+        // Get a reference to the navigation controller
         NavController navController = Navigation.findNavController(findViewById(id.navHostFragment));
 
+        // Pass navigation controller to a function to set up bottom navigation
         setupBottomNavigation(navController);
     }
 
