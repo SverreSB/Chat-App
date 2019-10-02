@@ -34,12 +34,11 @@ public class MainActivity extends AppCompatActivity {
         setupBottomNavigation(navController);
     }
 
+
     // Set up the bottom navigation
     private void setupBottomNavigation(NavController navController) {
-
         BottomNavigationView bottomNav = findViewById(id.bottomNavigationView);
         NavigationUI.setupWithNavController(bottomNav, navController);
-
     }
 
 }
