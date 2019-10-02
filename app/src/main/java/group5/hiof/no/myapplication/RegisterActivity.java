@@ -53,7 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String repeatedPassword = repeatPasswordField.getText().toString();
                 String forToast = "Username: " + username + "\nPassword: " + password + "\nRepeated Password: " + repeatedPassword;
 
-                // Add for saving fields to Database
+                // Add logic for saving fields to Database
 
 
                 Toast.makeText(getBaseContext(), forToast, Toast.LENGTH_LONG).show();
