@@ -22,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
         final EditText usernameField = findViewById(R.id.inputLoginUsername);
         final EditText passwordField = findViewById(R.id.inputLoginPassword);
 
+        // When 'Login' button is clicked
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,13 +45,5 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // When 'Log In' button is clicked
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent main = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(main);
-            }
-        });
     }
 }
