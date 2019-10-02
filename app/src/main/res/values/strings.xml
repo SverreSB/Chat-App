@@ -9,9 +9,9 @@
     <string name="register_button">Register</string>
 
     <!-- Strings that will be used as hints in input fields -->
-    <string name="username_hint">Type in Username...</string>
-    <string name="password_hint">Type in Password...</string>
-    <string name="repeat_password_hint">Repeat Password...</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="repeat_password_hint">Repeat Password</string>
     <string name="language">Choose language</string>
 
     <!-- Fonts to be used as strings -->

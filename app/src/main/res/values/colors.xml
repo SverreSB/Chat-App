@@ -5,6 +5,7 @@
     <color name="colorPrimaryDark">#464545</color>
     <color name="primaryDarkBackground">#212121</color>
     <color name="InactiveBottomNavIconColor">#FFFFFF</color>
+    <color name="staticText">#AA66CC</color>
 
     <color name="colorAccent">#D81B60</color>
 </resources>
