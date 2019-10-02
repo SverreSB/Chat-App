@@ -19,7 +19,7 @@ public class Chat {
 
 
     /*
-     * Getters and setters for field variables
+     *  Getters and setters for field variables
      */
 
     public UUID getChatID() {
