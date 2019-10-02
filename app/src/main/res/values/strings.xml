@@ -16,4 +16,10 @@
 
     <!-- Fonts to be used as strings -->
     <string name="icon_arrow_left">&#xf060;</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">HOME</string>
+    <string name="messages">MESSAGES</string>
+    <string name="profile">PROFILE</string>
 </resources>
