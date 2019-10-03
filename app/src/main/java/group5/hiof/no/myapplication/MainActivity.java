@@ -5,15 +5,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+import group5.hiof.no.myapplication.utility.LocationWorker;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -21,22 +30,13 @@ import static group5.hiof.no.myapplication.R.*;
 
 public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
-    private static final int LOCATION_PERMISSION_ID = 2;
-
-    private boolean loggedIn = false;
+    private static final int LOCATION_PERMISSION_ID = 1;
+    private AsyncTaskWorker asyncTaskWorker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.activity_main);
-
-        //Will change this logic later.
-        //Should check if user is logged in.
-        /*
-        if(!loggedIn) {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        }
-        */
 
         askForLocationPermission();
 
@@ -55,8 +55,10 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     }
 
 
-    //@AfterPermissionGranted(LOCATION_PERMISSION_ID)
+    @AfterPermissionGranted(LOCATION_PERMISSION_ID)
     private void askForLocationPermission() {
+
+        asyncTaskWorker = new AsyncTaskWorker();
 
         if (EasyPermissions.hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     Manifest.permission.ACCESS_FINE_LOCATION
             );
         }
+
     }
 
 
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-        // Handle granted permission
+        asyncTaskWorker.execute();
     }
 
 
@@ -93,4 +96,23 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             new AppSettingsDialog.Builder(this).build().show();
         }
     }
+
+
+
+
+    public class AsyncTaskWorker extends AsyncTask<Void, String, Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            LocationWorker worker = new LocationWorker(MainActivity.this);
+
+            Location foundLocation = worker.getLocation();
+
+            String address = worker.reverseGeocode(foundLocation);
+
+            Log.d("ADDRESS", address);
+
+            return true;
+        }
+    }
+
 }
