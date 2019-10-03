@@ -11,16 +11,21 @@ import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
+    // UI references
+    Button registerButton;
+    Button loginButton;
+    EditText usernameField;
+    EditText passwordField;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        final Button registerButton = findViewById(R.id.buttonRegister);
-        final Button loginButton = findViewById(R.id.buttonLogin);
-
-        final EditText usernameField = findViewById(R.id.inputLoginUsername);
-        final EditText passwordField = findViewById(R.id.inputLoginPassword);
+        registerButton = findViewById(R.id.buttonRegister);
+        loginButton = findViewById(R.id.buttonLogin);
+        usernameField = findViewById(R.id.inputLoginUsername);
+        passwordField = findViewById(R.id.inputLoginPassword);
 
         // When 'Login' button is clicked
         loginButton.setOnClickListener(new View.OnClickListener() {

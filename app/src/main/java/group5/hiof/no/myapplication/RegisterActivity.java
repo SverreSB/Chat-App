@@ -1,5 +1,6 @@
 package group5.hiof.no.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,20 +12,35 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
 public class RegisterActivity extends AppCompatActivity {
+
+    // UI references
+    private Button goBackButton;
+    private Button registerUserButton;
+    private EditText usernameField;
+    private EditText passwordField;
+    private EditText repeatPasswordField;
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        // Initializing buttons and text fields for inputs
-        Button goBackButton = findViewById(R.id.buttonGoBack);
-        Button registerUserButton = findViewById(R.id.buttonRegisterUser);
+        goBackButton = findViewById(R.id.buttonGoBack);
+        registerUserButton = findViewById(R.id.buttonRegisterUser);
 
-        final EditText usernameField = findViewById(R.id.inputRegisterUsername);
-        final EditText passwordField = findViewById(R.id.inputRegisterPassword);
-        final EditText repeatPasswordField = findViewById(R.id.inputRegisterRepeatPassword);
+        usernameField = findViewById(R.id.inputRegisterUsername);
+        passwordField = findViewById(R.id.inputRegisterPassword);
+        repeatPasswordField = findViewById(R.id.inputRegisterRepeatPassword);
+
+        mAuth = FirebaseAuth.getInstance();
 
 
         // Getting font from assets to use for go back to login screen
@@ -48,20 +64,25 @@ public class RegisterActivity extends AppCompatActivity {
         registerUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String username = usernameField.getText().toString();
-                String password = passwordField.getText().toString();
-                String repeatedPassword = repeatPasswordField.getText().toString();
-                String forToast = "Username: " + username + "\nPassword: " + password + "\nRepeated Password: " + repeatedPassword;
-
-                // Add logic for saving fields to Database
-
-
-                Toast.makeText(getBaseContext(), forToast, Toast.LENGTH_LONG).show();
-
+                createUser();
+                
                 finish();
             }
         });
 
+    }
 
+    private void createUser() {
+        String email = usernameField.getText().toString();
+        String password = passwordField.getText().toString();
+
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(!task.isSuccessful()) {
+                    Toast.makeText(RegisterActivity.this, "Not working", Toast.LENGTH_LONG);
+                }
+            }
+        });
     }
 }
