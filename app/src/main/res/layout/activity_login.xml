@@ -84,6 +84,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
         app:strokeColor="@color/staticText"
+        app:rippleColor="@color/staticText"
         app:strokeWidth="3dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
