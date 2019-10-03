@@ -14,4 +14,9 @@
         <item name="colorControlNormal">@color/InactiveBottomNavIconColor</item>
     </style>
 
+    <style name="PrimaryButton" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorButtonNormal">@color/staticText</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

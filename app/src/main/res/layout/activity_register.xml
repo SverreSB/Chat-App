@@ -8,19 +8,21 @@
 
     <Button
         android:id="@+id/buttonGoBack"
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="49dp"
         android:layout_marginStart="6dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="48dp"
         android:background="@android:color/transparent"
-        android:backgroundTint="#00FFFFFF"
-        android:text="@string/icon_arrow_left"
-        android:textSize="40sp"
+        android:backgroundTint="@android:color/transparent"
+        android:text="@string/go_back"
+        android:textSize="14sp"
         android:visibility="visible"
+        app:icon="@drawable/ic_action_arrow_back"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.085"
+        app:layout_constraintHorizontal_bias="0.032"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        style="?android:attr/borderlessButtonStyle"/>
 
     <TextView
         android:id="@+id/registerTopText"

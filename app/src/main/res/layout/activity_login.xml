@@ -60,21 +60,30 @@
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginTop="68dp"
+        android:backgroundTint="@color/staticText"
         android:text="@string/login_button"
+        android:theme="@style/PrimaryButton"
+        app:cornerRadius="75dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordLabel" />
 
     <Button
         android:id="@+id/buttonRegister"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginTop="72dp"
         android:text="@string/register_button"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        app:cornerRadius="75dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
+        app:strokeColor="@color/staticText"
+        app:strokeWidth="3dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

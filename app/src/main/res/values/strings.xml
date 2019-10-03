@@ -19,6 +19,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="go_back">BACK</string>
     <string name="home">HOME</string>
     <string name="messages">MESSAGES</string>
     <string name="profile">PROFILE</string>
