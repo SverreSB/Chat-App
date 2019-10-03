@@ -1,11 +1,22 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    
+    <style name="InputFields" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:textColorHint">@color/InactiveBottomNavIconColor</item>
+        <item name="colorControlActivated">@color/staticText</item>
+        <item name="colorControlNormal">@color/InactiveBottomNavIconColor</item>
+    </style>
+
+    <style name="PrimaryButton" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorButtonNormal">@color/staticText</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>
