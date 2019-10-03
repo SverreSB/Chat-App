@@ -8,6 +8,7 @@
 
     <Button
         android:id="@+id/buttonGoBack"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="49dp"
         android:layout_marginStart="6dp"
@@ -15,14 +16,15 @@
         android:background="@android:color/transparent"
         android:backgroundTint="@android:color/transparent"
         android:text="@string/go_back"
+        android:textColor="@color/staticText"
         android:textSize="14sp"
         android:visibility="visible"
         app:icon="@drawable/ic_action_arrow_back"
+        app:iconTint="@color/staticText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.032"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        style="?android:attr/borderlessButtonStyle"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/registerTopText"
@@ -95,9 +97,12 @@
     <Button
         android:id="@+id/buttonRegisterUser"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginTop="100dp"
+        android:backgroundTint="@color/staticText"
         android:text="@string/register_button"
+        android:theme="@style/PrimaryButton"
+        app:cornerRadius="75dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/labelRepeatPassword" />
