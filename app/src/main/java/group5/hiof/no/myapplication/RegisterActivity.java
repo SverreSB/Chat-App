@@ -44,11 +44,6 @@ public class RegisterActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
 
-        // Getting font from assets to use for go back to login screen
-        Typeface font = Typeface.createFromAsset( getAssets(), "fonts/fontawesome-webfont.ttf" );
-
-        goBackButton.setTypeface(font);
-
         // Button for going back to previous activity. This should be returning to login screen
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
