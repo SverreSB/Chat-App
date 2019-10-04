@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -64,25 +65,40 @@ public class RegisterActivity extends AppCompatActivity {
         registerUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createUser();
-                
-                finish();
+                String email = usernameField.getText().toString();
+                String password = passwordField.getText().toString();
+                createUser(email, password);
             }
         });
 
     }
 
-    private void createUser() {
-        String email = usernameField.getText().toString();
-        String password = passwordField.getText().toString();
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        isLoggedIn(currentUser);
+    }
 
+    private void createUser(String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(!task.isSuccessful()) {
-                    Toast.makeText(RegisterActivity.this, "Not working", Toast.LENGTH_LONG);
+                if (!task.isSuccessful()) {
+                    Toast.makeText(RegisterActivity.this, "Not working", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    FirebaseAuth.getInstance().signOut();
+                    finish();
                 }
             }
         });
+    }
+
+    private void isLoggedIn(FirebaseUser user) {
+        if (user != null) {
+            finish();
+        }
     }
 }
