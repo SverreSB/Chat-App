@@ -3,6 +3,7 @@
     <string name="app_name">Chataton</string>
     <string name="topTextLogin">Login</string>
     <string name="topTextRegister">Register</string>
+    <string name="topTextProfile">Account Settings</string>
 
     <!-- Strings for buttons -->
     <string name="login_button">Login</string>
@@ -24,4 +25,8 @@
     <string name="messages">MESSAGES</string>
     <string name="profile">PROFILE</string>
     <string name="title_activity_map_fragment">Map</string>
+    <string name="new_password_hint">New Password</string>
+    <string name="old_password_hint">Old Password</string>
+    <string name="sign_out_button">Sign Out</string>
+    <string name="change_password_button">Change Password</string>
 </resources>

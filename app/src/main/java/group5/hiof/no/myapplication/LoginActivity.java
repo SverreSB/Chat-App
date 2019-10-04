@@ -12,10 +12,10 @@ import android.widget.Toast;
 public class LoginActivity extends AppCompatActivity {
 
     // UI references
-    Button registerButton;
-    Button loginButton;
-    EditText usernameField;
-    EditText passwordField;
+    private Button registerButton;
+    private Button loginButton;
+    private EditText usernameField;
+    private EditText passwordField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
