@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,8 +32,6 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
     @NonNull
     @Override
     public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Log so we can see when the onCreateViewHolder method is called
-        Log.d("MovieAdapter", "Creating View");
 
         // Inflates the movie_list_item.xml to a view for us
         View view = mInflater.inflate(R.layout.chat_list_item, parent, false);
@@ -43,8 +42,6 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
-        // Log so we can see when the bind method is called
-        Log.d("MovieAdapter", "Binding View $position");
 
         // Gets the movie data we are going to use at the given position
         Chat currentMovie = data.get(position);
@@ -65,19 +62,30 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
 
         TextView chatPartner;
         ImageView partnerAvatar;
+        Button chatOptions;
 
         public ChatViewHolder(@NonNull View itemView) {
             super(itemView);
             chatPartner = itemView.findViewById(R.id.chatPartnerName);
             partnerAvatar = itemView.findViewById(R.id.chatPartnerAvatar);
+
+            chatOptions = itemView.findViewById(R.id.buttonChatOptions);
         }
 
         public void bind(Chat currentChat, View.OnClickListener clickListener) {
             // Fills the views with the given data
             partnerAvatar.setImageResource(currentChat.getAvatar());
             chatPartner.setText(currentChat.getReceiver());
+
             // Sets the onClickListener
             this.itemView.setOnClickListener(clickListener);
+
+            chatOptions.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("OPTIONS", "CLICKED");
+                }
+            });
         }
 
     }

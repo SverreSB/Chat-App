@@ -6,21 +6,17 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import group5.hiof.no.myapplication.adapter.ChatRecyclerAdapter;
 import group5.hiof.no.myapplication.model.Chat;
 
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.annotation.Nullable;
@@ -81,7 +77,6 @@ public class MessagesFragment extends Fragment {
                 Intent fullChat = new Intent(getContext(), ChatActivity.class);
                 fullChat.putExtra("CHAT", clickedChat);
                 startActivity(fullChat);
-
             }
         }));
 

@@ -36,12 +36,12 @@
             android:textSize="20sp"
             android:textStyle="bold"
             tool:layout_constraintBottom_toBottomOf="parent"
-            tool:layout_constraintEnd_toStartOf="@id/buttonGoToChat"
+            tool:layout_constraintEnd_toStartOf="@id/buttonChatOptions"
             tool:layout_constraintStart_toEndOf="@id/chatPartnerAvatar"
             tool:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/buttonGoToChat"
+            android:id="@+id/buttonChatOptions"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
             android:textColor="@color/staticText"
             android:textSize="14sp"
             android:visibility="visible"
-            tool:icon="@drawable/ic_action_arrow_next"
+            tool:icon="@drawable/ic_action_options"
             tool:iconTint="@color/staticText"
             tool:layout_constraintBottom_toBottomOf="parent"
             tool:layout_constraintEnd_toEndOf="parent"
