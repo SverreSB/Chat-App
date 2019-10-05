@@ -22,4 +22,5 @@
         android:name="group5.hiof.no.myapplication.MessagesFragment"
         android:label="Messages"
         tools:layout="@layout/fragment_messages" />
+
 </navigation>
