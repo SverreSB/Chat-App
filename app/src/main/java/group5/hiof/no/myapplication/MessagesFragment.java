@@ -17,6 +17,7 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -32,6 +33,7 @@ public class MessagesFragment extends Fragment {
 
     private ArrayList<Chat> chatList;
     private RecyclerView chatRecyclerView;
+    private Button newMessage;
 
     public MessagesFragment() {
         // Required empty public constructor
@@ -44,6 +46,18 @@ public class MessagesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_messages, container, false);
 
         chatList = Chat.getChats();
+
+        // Initialize and set onClick for the 'new message' button
+        newMessage = view.findViewById(R.id.buttonNewMessage);
+        newMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent fullChat = new Intent(getContext(), ChatActivity.class);
+                Chat temp = null;
+                fullChat.putExtra("CHAT", temp);
+                startActivity(fullChat);
+            }
+        });
 
         return view;
     }
@@ -61,22 +75,11 @@ public class MessagesFragment extends Fragment {
                 // Gets the position of the item that's clicked
                 int position = chatRecyclerView.getChildAdapterPosition(view);
 
-                // Gets the movie based on which item got clicked
+                // Gets the chat based on which item got clicked
                 Chat clickedChat = chatList.get(position);
 
-                /*
-                // Creates the navigation action, including the uid argument
-                NavDirections action = MessagesFragment.actionMovieListFragmentToMovieDetailFragment(clickedChat.getUid());
-
-                // Calls the navigat action, taking us to the MovieDetailFragment
-                Navigation.findNavController(view).navigate(action);
-
-                // Creates a toast with the movie that got clicked
-                Toast.makeText(view.getContext(), clickedChat.getReceiver() + " clicked", Toast.LENGTH_LONG).show();
-                */
-
                 Intent fullChat = new Intent(getContext(), ChatActivity.class);
-                fullChat.putExtra("CHAT", (Serializable) clickedChat);
+                fullChat.putExtra("CHAT", clickedChat);
                 startActivity(fullChat);
 
             }
