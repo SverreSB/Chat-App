@@ -1,11 +1,12 @@
 package group5.hiof.no.myapplication.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 
 import group5.hiof.no.myapplication.R;
 
-public class Chat {
+public class Chat implements Serializable {
 
     /*
     private UUID chatID;

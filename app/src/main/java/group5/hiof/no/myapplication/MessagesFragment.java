@@ -1,6 +1,7 @@
 package group5.hiof.no.myapplication;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,11 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import group5.hiof.no.myapplication.adapter.ChatRecyclerAdapter;
 import group5.hiof.no.myapplication.model.Chat;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.annotation.Nullable;
@@ -43,9 +46,6 @@ public class MessagesFragment extends Fragment {
         chatList = Chat.getChats();
 
         return view;
-
-        // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_messages, container, false);
     }
 
 
@@ -64,14 +64,21 @@ public class MessagesFragment extends Fragment {
                 // Gets the movie based on which item got clicked
                 Chat clickedChat = chatList.get(position);
 
+                /*
                 // Creates the navigation action, including the uid argument
-                //NavDirections action = MessagesFragment.actionMovieListFragmentToMovieDetailFragment(clickedChat.getUid());
+                NavDirections action = MessagesFragment.actionMovieListFragmentToMovieDetailFragment(clickedChat.getUid());
 
                 // Calls the navigat action, taking us to the MovieDetailFragment
-                //Navigation.findNavController(view).navigate(action);
+                Navigation.findNavController(view).navigate(action);
 
                 // Creates a toast with the movie that got clicked
                 Toast.makeText(view.getContext(), clickedChat.getReceiver() + " clicked", Toast.LENGTH_LONG).show();
+                */
+
+                Intent fullChat = new Intent(getContext(), ChatActivity.class);
+                fullChat.putExtra("CHAT", (Serializable) clickedChat);
+                startActivity(fullChat);
+
             }
         }));
 
