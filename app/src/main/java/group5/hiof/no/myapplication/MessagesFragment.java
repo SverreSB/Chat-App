@@ -3,11 +3,23 @@ package group5.hiof.no.myapplication;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import group5.hiof.no.myapplication.adapter.ChatRecyclerAdapter;
+import group5.hiof.no.myapplication.model.Chat;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+
+import javax.annotation.Nullable;
 
 
 /**
@@ -15,6 +27,8 @@ import android.view.ViewGroup;
  */
 public class MessagesFragment extends Fragment {
 
+    private ArrayList<Chat> chatList;
+    private RecyclerView chatRecyclerView;
 
     public MessagesFragment() {
         // Required empty public constructor
@@ -22,10 +36,46 @@ public class MessagesFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_messages, container, false);
+
+        chatList = Chat.getChats();
+
+        return view;
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_messages, container, false);
+        //return inflater.inflate(R.layout.fragment_messages, container, false);
     }
 
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        chatRecyclerView = view.findViewById(R.id.chatRecyclerView);
+
+        chatRecyclerView.setAdapter(new ChatRecyclerAdapter(view.getContext(), chatList, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Gets the position of the item that's clicked
+                int position = chatRecyclerView.getChildAdapterPosition(view);
+
+                // Gets the movie based on which item got clicked
+                Chat clickedChat = chatList.get(position);
+
+                // Creates the navigation action, including the uid argument
+                //NavDirections action = MessagesFragment.actionMovieListFragmentToMovieDetailFragment(clickedChat.getUid());
+
+                // Calls the navigat action, taking us to the MovieDetailFragment
+                //Navigation.findNavController(view).navigate(action);
+
+                // Creates a toast with the movie that got clicked
+                Toast.makeText(view.getContext(), clickedChat.getReceiver() + " clicked", Toast.LENGTH_LONG).show();
+            }
+        }));
+
+
+        chatRecyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 1));
+    }
 }
