@@ -64,19 +64,8 @@ public class MessagesFragment extends Fragment {
                 // Gets the movie based on which item got clicked
                 Chat clickedChat = chatList.get(position);
 
-                /*
-                // Creates the navigation action, including the uid argument
-                NavDirections action = MessagesFragment.actionMovieListFragmentToMovieDetailFragment(clickedChat.getUid());
-
-                // Calls the navigat action, taking us to the MovieDetailFragment
-                Navigation.findNavController(view).navigate(action);
-
-                // Creates a toast with the movie that got clicked
-                Toast.makeText(view.getContext(), clickedChat.getReceiver() + " clicked", Toast.LENGTH_LONG).show();
-                */
-
                 Intent fullChat = new Intent(getContext(), ChatActivity.class);
-                fullChat.putExtra("CHAT", (Serializable) clickedChat);
+                fullChat.putExtra("CHAT", clickedChat);
                 startActivity(fullChat);
 
             }
