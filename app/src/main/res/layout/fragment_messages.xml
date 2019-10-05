@@ -7,16 +7,44 @@
     android:background="@color/primaryDarkBackground"
     tools:context=".MessagesFragment">
 
-    <TextView
-        android:id="@+id/messagesStatic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp"
-        android:layout_marginBottom="25dp"
-        android:text="@string/messages"
-        android:textSize="24sp" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header_container"
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
+        <Button
+            android:id="@+id/buttonNewMessage"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="135dp"
+            android:layout_height="37dp"
+            android:background="@android:color/transparent"
+            android:backgroundTint="@android:color/transparent"
+            android:gravity="center_horizontal|end"
+            android:text="@string/new_message"
+            android:textColor="@color/staticText"
+            android:textSize="14sp"
+            android:visibility="visible"
+            app:iconTint="@color/staticText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/messagesStatic"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/messagesStatic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_horizontal"
+            android:layout_marginStart="55dp"
+            android:layout_marginEnd="50dp"
+            android:text="@string/messages"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/buttonNewMessage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRecyclerView"
@@ -28,6 +56,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/messagesStatic"
-        app:layout_constraintTop_toBottomOf="@id/messagesStatic" />
+        app:layout_constraintTop_toBottomOf="@id/header_container" />
 
 </FrameLayout>

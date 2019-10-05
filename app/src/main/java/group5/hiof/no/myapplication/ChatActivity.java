@@ -22,7 +22,12 @@ public class ChatActivity extends AppCompatActivity {
         chatPartner = findViewById(R.id.chatPartner);
         Chat chat = (Chat) getIntent().getSerializableExtra("CHAT");
 
-        chatPartner.setText(chat.getReceiver() + " " + chat.getUid());
+        if(chat != null) {
+            chatPartner.setText(chat.getReceiver() + " " + chat.getUid());
+        }
+        else {
+            chatPartner.setText("NEW");
+        }
 
         exitChat.setOnClickListener(new View.OnClickListener() {
             @Override
