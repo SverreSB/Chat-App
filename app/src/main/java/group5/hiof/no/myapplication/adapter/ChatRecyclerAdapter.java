@@ -80,6 +80,7 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
             // Sets the onClickListener
             this.itemView.setOnClickListener(clickListener);
 
+            // Sets onClickListener for the 'options' button
             chatOptions.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

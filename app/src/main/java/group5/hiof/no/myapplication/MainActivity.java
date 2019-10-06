@@ -57,7 +57,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         asyncTaskWorker = new AsyncTaskWorker();
 
         if (EasyPermissions.hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            // Create an intent to send the location information through activities
+            Intent login = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(login);
         } else {
             // Do not have permissions, request them now
             EasyPermissions.requestPermissions(
@@ -105,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
             String address = worker.reverseGeocode(foundLocation);
 
-            Log.d("ADDRESS", address);
+            Log.d("ADDRESS - MAINACTIVITY", address);
 
             return true;
         }
