@@ -1,27 +1,30 @@
 package group5.hiof.no.myapplication.model;
 
-import android.location.Location;
-
 import java.util.HashMap;
 import java.util.UUID;
+
+import group5.hiof.no.myapplication.database.UserDB;
 
 public class User {
 
     private UUID userID;
     private String username;
     private String email;
-    private String password;
     private String avatar;
-    private Location location;
-    private HashMap<UUID, Chat> activeChats;
+    private double lat;
+    private double lng;
+    private HashMap<UUID, Chat> activeChats = new HashMap<>();
 
-    public User(String username, String password, Location location) {
-        this.username = username;
-        this.password = password;
-        this.location = location;
-        activeChats = new HashMap<>();
+    private UserDB userdb = new UserDB();
+
+    public User(String email, double lat, double lng) {
+        this.username = "DEFAULT USERNAME";
+        this.email = email;
+        this.lat = lat;
+        this.lng = lng;
+
+        userdb.writeUserToDB(username, email, lat, lng);
     }
-
 
     /*
      *  Getters and setters for field variables.
@@ -51,14 +54,6 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getAvatar() {
         return avatar;
     }
@@ -67,12 +62,20 @@ public class User {
         this.avatar = avatar;
     }
 
-    public Location getLocation() {
-        return location;
+    public double getLat() {
+        return lat;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 
     public HashMap<UUID, Chat> getActiveChats() {

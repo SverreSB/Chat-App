@@ -2,9 +2,11 @@ package group5.hiof.no.myapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import group5.hiof.no.myapplication.model.User;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.location.Location;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
@@ -28,6 +30,8 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText repeatPasswordField;
 
     private FirebaseAuth mAuth;
+    private double lat;
+    private double lng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,10 @@ public class RegisterActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        lat = MainActivity.LATITUDE;
+        lng = MainActivity.LONGITUDE;
+        String temp = String.valueOf(lat) + "\n" + String.valueOf(lng);
+        Toast.makeText(this, temp, Toast.LENGTH_LONG).show();
 
         // Button for going back to previous activity. This should be returning to login screen
         goBackButton.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +97,8 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+
+        User temp = new User(email, lat, lng);
     }
 
     private void isLoggedIn(FirebaseUser user) {

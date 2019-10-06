@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.type.LatLng;
 
 
 import java.util.List;
@@ -28,6 +29,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
     private static final int LOCATION_PERMISSION_ID = 1;
     private AsyncTaskWorker asyncTaskWorker;
+
+    public static double LATITUDE;
+    public static double LONGITUDE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,10 +108,10 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             LocationWorker worker = new LocationWorker(MainActivity.this);
 
             Location foundLocation = worker.getLocation();
+            LATITUDE = foundLocation.getLatitude();
+            LONGITUDE = foundLocation.getLongitude();
 
             String address = worker.reverseGeocode(foundLocation);
-
-            Log.d("ADDRESS - MAINACTIVITY", address);
 
             return true;
         }
