@@ -17,13 +17,13 @@ public class User {
 
     private UserDB userdb = new UserDB();
 
-    public User(String email, double lat, double lng) {
+    public User(String email, double lat, double lng, String id) {
         this.username = "DEFAULT USERNAME";
         this.email = email;
         this.lat = lat;
         this.lng = lng;
 
-        userdb.writeUserToDB(username, email, lat, lng);
+        userdb.writeUserToDB(username, email, lat, lng, id);
     }
 
     /*
