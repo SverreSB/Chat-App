@@ -1,5 +1,7 @@
 package group5.hiof.no.myapplication.model;
 
+import android.location.Location;
+
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -7,12 +9,13 @@ public class User {
 
     private UUID userID;
     private String username;
+    private String email;
     private String password;
     private String avatar;
-    private String location;
+    private Location location;
     private HashMap<UUID, Chat> activeChats;
 
-    public User(String username, String password, String location) {
+    public User(String username, String password, Location location) {
         this.username = username;
         this.password = password;
         this.location = location;
@@ -40,6 +43,14 @@ public class User {
         this.username = username;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -56,11 +67,11 @@ public class User {
         this.avatar = avatar;
     }
 
-    public String getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 
