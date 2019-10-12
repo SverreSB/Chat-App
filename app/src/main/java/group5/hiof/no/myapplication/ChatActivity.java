@@ -8,6 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class ChatActivity extends AppCompatActivity {
 
     private TextView chatPartner;
@@ -27,6 +33,20 @@ public class ChatActivity extends AppCompatActivity {
         }
         else {
             chatPartner.setText("NEW");
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            String userId = mAuth.getCurrentUser().getUid();
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("users")
+                    .document(userId)
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    String mail = documentSnapshot.getString("email");
+                    chatPartner.setText(mail);
+                }
+            });
         }
 
         exitChat.setOnClickListener(new View.OnClickListener() {

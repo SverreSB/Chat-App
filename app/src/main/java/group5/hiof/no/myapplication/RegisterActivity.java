@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +33,8 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private double lat;
     private double lng;
+    private String id;
+    private String mail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
         isLoggedIn(currentUser);
     }
 
-    private void createUser(String email, String password) {
+    private void createUser(final String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -92,13 +95,20 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Not working", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    FirebaseAuth.getInstance().signOut();
-                    finish();
+                    id = task.getResult().getUser().getUid();
+                    mail = email;
+                    Toast.makeText(RegisterActivity.this, id, Toast.LENGTH_LONG).show();
                 }
+            }
+        }).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                User temp = new User(email, lat, lng, id);
+                FirebaseAuth.getInstance().signOut();
+                finish();
             }
         });
 
-        User temp = new User(email, lat, lng);
     }
 
     private void isLoggedIn(FirebaseUser user) {
