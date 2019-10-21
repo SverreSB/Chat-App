@@ -30,4 +30,6 @@
     <string name="sign_out_button">Sign Out</string>
     <string name="change_password_button">Change Password</string>
     <string name="new_message">New Message</string>
+    <string name="write_message">Write Message...</string>
+    <string name="send">Send</string>
 </resources>

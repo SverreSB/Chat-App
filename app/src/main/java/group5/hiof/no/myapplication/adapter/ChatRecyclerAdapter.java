@@ -75,7 +75,7 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         public void bind(Chat currentChat, View.OnClickListener clickListener) {
             // Fills the views with the given data
             partnerAvatar.setImageResource(currentChat.getAvatar());
-            chatPartner.setText(currentChat.getReceiver());
+            chatPartner.setText("Get receiver with sender ID");
 
             // Sets the onClickListener
             this.itemView.setOnClickListener(clickListener);
