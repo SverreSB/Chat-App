@@ -8,6 +8,7 @@ import java.util.Map;
 import group5.hiof.no.myapplication.model.User;
 
 public class UserDB {
+    FirebaseFirestore db;
 
     public UserDB() {
         // Empty constructor
@@ -16,9 +17,8 @@ public class UserDB {
     // Creates a document in the 'users' collection in Firestore
     public void writeUserToDB(User user, String id) {
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         db.collection("users").document(id).set(user);
     }
-
 }

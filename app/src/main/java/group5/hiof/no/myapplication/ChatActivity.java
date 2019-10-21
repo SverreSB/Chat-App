@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -55,7 +56,7 @@ public class ChatActivity extends AppCompatActivity {
         }
         else {
             chatPartner.setText("NEW");
-            String userId = mAuth.getCurrentUser().getUid();
+            final String userId = mAuth.getCurrentUser().getUid();
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection("users")
@@ -72,28 +73,9 @@ public class ChatActivity extends AppCompatActivity {
             sendMessageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    final String message = messageField.getText().toString();
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    CollectionReference userCollection = db.collection("users");
-                    //Fining a random receiver
-                    userCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            chatDB = new ChatDB();
-                            if(task.isSuccessful()) {
-                                ArrayList<String> userList = new ArrayList<>();
-                                for(DocumentSnapshot documentSnapshot : task.getResult()) {
-                                    String user = documentSnapshot.getId();
-                                    userList.add(user);
-                                }
-
-                                // Change up logic to handle duplicate chats
-                                String randomUser = userList.get(new Random().nextInt(userList.size()));
-                                String currentUser = mAuth.getUid();
-                                chatDB.createChat(currentUser, randomUser, message);
-                            }
-                        }
-                    });
+                    chatDB = new ChatDB();
+                    String message = messageField.getText().toString();
+                    chatDB.createChat(userId, message);
                 }
             });
 
