@@ -1,5 +1,6 @@
 package group5.hiof.no.myapplication.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -7,36 +8,31 @@ import group5.hiof.no.myapplication.database.UserDB;
 
 public class User {
 
-    private UUID userID;
     private String username;
     private String email;
     private String avatar;
-    private double lat;
-    private double lng;
-    private HashMap<UUID, Chat> activeChats = new HashMap<>();
+    private double latitude;
+    private double longitude;
+    private ArrayList<String> activeChats;
 
-    private UserDB userdb = new UserDB();
+    public User() {
+        //Empty constructor
+    }
 
-    public User(String email, double lat, double lng, String id) {
-        this.username = "DEFAULT USERNAME";
+    public User(String username, String email, String avatar, double latitude, double longitude) {
+        this.username = username;
         this.email = email;
-        this.lat = lat;
-        this.lng = lng;
+        this.avatar = avatar;
+        this.latitude = latitude;
+        this.longitude = longitude;
 
-        userdb.writeUserToDB(username, email, lat, lng, id);
+        this.activeChats = new ArrayList<>();
     }
 
     /*
      *  Getters and setters for field variables.
      */
 
-    public UUID getUserID() {
-        return userID;
-    }
-
-    public void setUserID(UUID userID) {
-        this.userID = userID;
-    }
 
     public String getUsername() {
         return username;
@@ -54,6 +50,7 @@ public class User {
         this.email = email;
     }
 
+
     public String getAvatar() {
         return avatar;
     }
@@ -62,27 +59,27 @@ public class User {
         this.avatar = avatar;
     }
 
-    public double getLat() {
-        return lat;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setLat(double lat) {
-        this.lat = lat;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
-    public double getLng() {
-        return lng;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setLng(double lng) {
-        this.lng = lng;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
-    public HashMap<UUID, Chat> getActiveChats() {
+    public ArrayList<String> getActiveChats() {
         return activeChats;
     }
 
-    public void setActiveChats(HashMap<UUID, Chat> activeChats) {
+    public void setActiveChats(ArrayList<String> activeChats) {
         this.activeChats = activeChats;
     }
 

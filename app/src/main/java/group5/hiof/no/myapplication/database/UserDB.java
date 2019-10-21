@@ -5,6 +5,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import group5.hiof.no.myapplication.model.User;
+
 public class UserDB {
 
     public UserDB() {
@@ -12,15 +14,9 @@ public class UserDB {
     }
 
     // Creates a document in the 'users' collection in Firestore
-    public void writeUserToDB(String username, String email, double lat, double lng, String id) {
+    public void writeUserToDB(User user, String id) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        Map<String, Object> user = new HashMap<>();
-        user.put("username", username);
-        user.put("email", email);
-        user.put("latitude", lat);
-        user.put("longitude", lng);
 
         db.collection("users").document(id).set(user);
     }

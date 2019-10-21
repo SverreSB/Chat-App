@@ -2,8 +2,11 @@ package group5.hiof.no.myapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import group5.hiof.no.myapplication.database.UserDB;
 import group5.hiof.no.myapplication.model.User;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.location.Location;
@@ -20,6 +23,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+
+import group5.hiof.no.myapplication.model.User;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -31,10 +37,9 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText repeatPasswordField;
 
     private FirebaseAuth mAuth;
-    private double lat;
-    private double lng;
     private String id;
-    private String mail;
+    private UserDB userDB;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +54,6 @@ public class RegisterActivity extends AppCompatActivity {
         repeatPasswordField = findViewById(R.id.inputRegisterRepeatPassword);
 
         mAuth = FirebaseAuth.getInstance();
-
-        lat = MainActivity.LATITUDE;
-        lng = MainActivity.LONGITUDE;
-        String temp = String.valueOf(lat) + "\n" + String.valueOf(lng);
-        Toast.makeText(this, temp, Toast.LENGTH_LONG).show();
 
         // Button for going back to previous activity. This should be returning to login screen
         goBackButton.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +73,8 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = usernameField.getText().toString();
                 String password = passwordField.getText().toString();
-                createUser(email, password);
+                String username = "test";
+                createUser(email, username, password);
             }
         });
 
@@ -87,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
         isLoggedIn(currentUser);
     }
 
-    private void createUser(final String email, String password) {
+    private void createUser(final String email, final String username, String password) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -95,16 +96,18 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Not working", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    id = task.getResult().getUser().getUid();
-                    mail = email;
-                    Toast.makeText(RegisterActivity.this, id, Toast.LENGTH_LONG).show();
+                    id = mAuth.getUid();
+                    userDB = new UserDB();
                 }
             }
         }).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                User temp = new User(email, lat, lng, id);
-                FirebaseAuth.getInstance().signOut();
+                double latitude = MainActivity.LATITUDE;
+                double longitude = MainActivity.LONGITUDE;
+                String avatar = "picture.jpg";
+                User user = new User(username, email, avatar, latitude, longitude);
+                userDB.writeUserToDB(user, id);
                 finish();
             }
         });
