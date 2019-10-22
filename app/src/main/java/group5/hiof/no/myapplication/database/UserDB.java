@@ -2,9 +2,6 @@ package group5.hiof.no.myapplication.database;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import group5.hiof.no.myapplication.model.User;
 
 public class UserDB {

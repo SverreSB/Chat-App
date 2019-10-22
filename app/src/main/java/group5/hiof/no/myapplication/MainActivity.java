@@ -15,10 +15,8 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.type.LatLng;
 
 
 import java.util.List;

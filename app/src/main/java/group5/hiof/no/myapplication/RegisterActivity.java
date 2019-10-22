@@ -6,12 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import group5.hiof.no.myapplication.database.UserDB;
 import group5.hiof.no.myapplication.model.User;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Typeface;
-import android.location.Location;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,9 +18,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
-
-import group5.hiof.no.myapplication.model.User;
 
 public class RegisterActivity extends AppCompatActivity {
 

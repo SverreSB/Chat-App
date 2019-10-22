@@ -1,10 +1,6 @@
 package group5.hiof.no.myapplication.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
-
-import group5.hiof.no.myapplication.database.UserDB;
 
 public class User {
 
