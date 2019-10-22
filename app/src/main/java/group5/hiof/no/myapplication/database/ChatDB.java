@@ -4,9 +4,11 @@ package group5.hiof.no.myapplication.database;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -16,6 +18,7 @@ import java.util.Random;
 
 import group5.hiof.no.myapplication.R;
 import group5.hiof.no.myapplication.model.Chat;
+import group5.hiof.no.myapplication.model.Message;
 
 public class ChatDB {
     FirebaseFirestore db;
@@ -34,7 +37,7 @@ public class ChatDB {
         userCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                String currentUserID = mAuth.getUid();
+                final String currentUserID = mAuth.getUid();
 
                 if(task.isSuccessful()) {
                     ArrayList<String> userList = new ArrayList<>();
@@ -45,13 +48,20 @@ public class ChatDB {
                         }
                     }
 
-                    String receiver = userList.get(new Random().nextInt(userList.size()));
+                    final String receiver = userList.get(new Random().nextInt(userList.size()));
+                    final String content = message;
                     Chat chat = new Chat(sender, receiver, R.drawable.ic_action_profile);
-                    ArrayList<String> messages = new ArrayList<>();
-                    messages.add(message);
-                    chat.setMessages(messages);
 
-                    db.collection("chats").add(chat);
+
+                    db.collection("chats")
+                            .add(chat)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Message message = new Message(currentUserID, receiver, content);
+                                    documentReference.collection("messages").add(message);
+                                }
+                            });
                 }
             }
         });

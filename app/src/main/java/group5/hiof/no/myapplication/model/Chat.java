@@ -10,7 +10,7 @@ public class Chat implements Serializable {
 
     // NEW CONSTRUCTOR AND VARIABLES FOR TESTING
     private ArrayList<String> participants;
-    private ArrayList<String> messages;
+    //private ArrayList<String> messages;
     private int avatar;
 
     public Chat() {
@@ -22,7 +22,7 @@ public class Chat implements Serializable {
         this.participants = new ArrayList<>();
         participants.add(sender);
         participants.add(receiver);
-        this.messages = new ArrayList<>();
+        //this.messages = new ArrayList<>();
     }
 
     public ArrayList<String> getParticipants() {
@@ -33,13 +33,13 @@ public class Chat implements Serializable {
         this.participants = participants;
     }
 
-    public ArrayList<String> getMessages() {
+    /*public ArrayList<String> getMessages() {
         return messages;
     }
 
     public void setMessages(ArrayList<String> messages) {
         this.messages = messages;
-    }
+    }*/
 
     public int getAvatar() {
         return avatar;

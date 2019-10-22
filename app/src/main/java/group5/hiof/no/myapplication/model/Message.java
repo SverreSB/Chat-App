@@ -1,20 +1,19 @@
 package group5.hiof.no.myapplication.model;
 
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class Message {
 
-    private UUID messageID;
-    private User sender;
-    private User receiver;
+    private String sender;
+    private String receiver;
     private String timestamp;
-    private String format;
     private String messageContent;
 
-    public Message(User sender, User receiver, String format, String content) {
+    public Message(String sender, String receiver, String content) {
         this.sender = sender;
         this.receiver = receiver;
-        this.format = format;
+        this.timestamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
         this.messageContent = content;
     }
 
@@ -23,27 +22,19 @@ public class Message {
      *  Getters and setters for field variables
      */
 
-    public UUID getMessageID() {
-        return messageID;
-    }
-
-    public void setMessageID(UUID messageID) {
-        this.messageID = messageID;
-    }
-
-    public User getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(User sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 
-    public User getReceiver() {
+    public String getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(User receiver) {
+    public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
 
@@ -53,14 +44,6 @@ public class Message {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
     }
 
     public String getMessageContent() {
