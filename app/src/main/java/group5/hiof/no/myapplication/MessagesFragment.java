@@ -9,11 +9,17 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import group5.hiof.no.myapplication.adapter.ChatRecyclerAdapter;
 import group5.hiof.no.myapplication.model.Chat;
+import group5.hiof.no.myapplication.model.User;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -40,6 +46,20 @@ public class MessagesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_messages, container, false);
 
         chatList = Chat.getChats();
+
+        /*db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        //Getting chats from current users list of chats and finds the chats by id
+        db.collection("users")
+                .document(mAuth.getUid())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        User user = documentSnapshot.toObject(User.class);
+
+                    }
+                });*/
 
         // Initialize and set onClick for the 'new message' button
         newMessage = view.findViewById(R.id.buttonNewMessage);
@@ -80,5 +100,9 @@ public class MessagesFragment extends Fragment {
 
 
         chatRecyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 1));
+    }
+
+    private void setChatList(ArrayList<Chat> chatList) {
+        this.chatList = chatList;
     }
 }

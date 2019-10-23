@@ -79,4 +79,8 @@ public class User {
         this.activeChats = activeChats;
     }
 
+    public void addChat(String id) {
+        this.activeChats.add(id);
+    }
+
 }
