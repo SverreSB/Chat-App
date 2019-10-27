@@ -49,4 +49,11 @@ public class Chat implements Serializable {
 
         return data;
     }
+
+    @Override
+    public String toString() {
+        return "Participant 1 " + participants.get(0) + "\n" +
+                "Participant 2 " + participants.get(1) + "\n" +
+                "Avatar " + avatar;
+    }
 }

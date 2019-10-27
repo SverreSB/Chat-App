@@ -11,14 +11,19 @@ import group5.hiof.no.myapplication.adapter.ChatRecyclerAdapter;
 import group5.hiof.no.myapplication.model.Chat;
 import group5.hiof.no.myapplication.model.User;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -31,9 +36,14 @@ import javax.annotation.Nullable;
  */
 public class MessagesFragment extends Fragment {
 
+    private final String TAG = "MESSAGEFRAGMENT";
     private ArrayList<Chat> chatList;
+    final public ArrayList<Chat> testingChatList = new ArrayList<>();
     private RecyclerView chatRecyclerView;
     private Button newMessage;
+
+    FirebaseFirestore db;
+    FirebaseAuth mAuth;
 
     public MessagesFragment() {
         // Required empty public constructor
@@ -41,13 +51,10 @@ public class MessagesFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        View view = inflater.inflate(R.layout.fragment_messages, container, false);
-
-        chatList = Chat.getChats();
-
-        /*db = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         //Getting chats from current users list of chats and finds the chats by id
         db.collection("users")
@@ -57,9 +64,19 @@ public class MessagesFragment extends Fragment {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         User user = documentSnapshot.toObject(User.class);
-
+                        handleActiveChats(user.getActiveChats());
                     }
-                });*/
+                });
+
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_messages, container, false);
+
+        chatList = Chat.getChats();
 
         // Initialize and set onClick for the 'new message' button
         newMessage = view.findViewById(R.id.buttonNewMessage);
@@ -102,7 +119,23 @@ public class MessagesFragment extends Fragment {
         chatRecyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 1));
     }
 
-    private void setChatList(ArrayList<Chat> chatList) {
-        this.chatList = chatList;
+    public void handleActiveChats(ArrayList<String> activeChatsID) {
+        for(String chats : activeChatsID) {
+            db = FirebaseFirestore.getInstance();
+            db.collection("chats")
+                    .document(chats)
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if(documentSnapshot.exists()) {
+                                Chat chat = documentSnapshot.toObject(Chat.class);
+                                testingChatList.add(chat);
+                            }
+
+                        }
+                    });
+        }
     }
+
 }
