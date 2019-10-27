@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -40,7 +41,7 @@ public class MessagesFragment extends Fragment {
     private ArrayList<Chat> chatList;
     final public ArrayList<Chat> testingChatList = new ArrayList<>();
     private RecyclerView chatRecyclerView;
-    private Button newMessage;
+    private FloatingActionButton newMessage;
 
     FirebaseFirestore db;
     FirebaseAuth mAuth;
