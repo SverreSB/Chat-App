@@ -41,7 +41,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap gMap = null;
 
-    private LatLng hiof = new LatLng(59.12797849, 11.35272861);
     private HashMap<LatLng, Integer> markers = new HashMap<>();
     private ArrayList<String> activeChats;
     private ArrayList<String> receivers = new ArrayList<>();
@@ -74,13 +73,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
-        gMap.addMarker(new MarkerOptions().position(hiof).title("Marker on HIOF"));
 
         // Add markers when the map is ready
         getActiveChats();
     }
 
 
+    // Gets all the active chats for the logged in user
     private void getActiveChats() {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -100,6 +99,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                 });
     }
 
+
+    // Gets all the current users chatpartners
     private void getChatPartners() {
         Toast.makeText(getContext(), String.valueOf(user.getActiveChats().size()), Toast.LENGTH_LONG).show();
         activeChats = user.getActiveChats();
@@ -134,6 +135,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+
+    // Eventually creates markers for all chatpartners
     private void createMarkers() {
         for(String receiver : receivers) {
             db = FirebaseFirestore.getInstance();
@@ -147,11 +150,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
                             User temp = task.getResult().toObject(User.class);
                             LatLng marker = new LatLng(temp.getLatitude(), temp.getLongitude());
 
-                            markers.put(marker, 1);
                             gMap.addMarker(new MarkerOptions().position(marker));
                         }
                     });
         }
     }
-
 }
