@@ -39,7 +39,7 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
     @Override
     public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        // Inflates the movie_list_item.xml to a view for us
+        // Inflates the chat_list_item.xml to a view for us
         View view = mInflater.inflate(R.layout.chat_list_item, parent, false);
         mAuth = FirebaseAuth.getInstance();
         // Create the viewholder with the corresponding view (list item)
@@ -52,7 +52,7 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         // Gets the movie data we are going to use at the given position
         Chat currentChat = data.get(position);
 
-        // Gives the movie data and clickListener to the ViewHolder
+        // Gives the chat data and clickListener to the ViewHolder
         // Makes it fill up the given position with the new data and add the clicklistener to the view
         holder.bind(currentChat, clickListener);
     }
@@ -68,14 +68,11 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
 
         TextView chatPartner;
         ImageView partnerAvatar;
-        Button chatOptions;
 
         public ChatViewHolder(@NonNull View itemView) {
             super(itemView);
             chatPartner = itemView.findViewById(R.id.chatPartnerName);
             partnerAvatar = itemView.findViewById(R.id.chatPartnerAvatar);
-
-            chatOptions = itemView.findViewById(R.id.buttonChatOptions);
         }
 
         public void bind(Chat currentChat, View.OnClickListener clickListener) {
@@ -86,14 +83,6 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
 
             // Sets the onClickListener
             this.itemView.setOnClickListener(clickListener);
-
-            // Sets onClickListener for the 'options' button
-            chatOptions.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d("OPTIONS", "CLICKED");
-                }
-            });
         }
 
         private String getPartner(String uid, Chat chat) {
