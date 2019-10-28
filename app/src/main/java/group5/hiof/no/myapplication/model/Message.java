@@ -10,11 +10,22 @@ public class Message {
     private String timestamp;
     private String messageContent;
 
-    public Message(String sender, String receiver, String content) {
+    public Message() {
+
+    }
+
+    public Message(String sender, String receiver, String messageContent) {
         this.sender = sender;
         this.receiver = receiver;
         this.timestamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-        this.messageContent = content;
+        this.messageContent = messageContent;
+    }
+
+    public Message(String sender, String receiver, String messageContent, String timestamp) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.messageContent = messageContent;
+        this.timestamp = timestamp;
     }
 
 

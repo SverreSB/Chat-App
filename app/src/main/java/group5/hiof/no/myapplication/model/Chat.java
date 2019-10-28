@@ -2,12 +2,14 @@ package group5.hiof.no.myapplication.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import group5.hiof.no.myapplication.R;
 
 public class Chat implements Serializable {
 
     // NEW CONSTRUCTOR AND VARIABLES FOR TESTING
+    private String uid;
     private ArrayList<String> participants;
     private int avatar;
 
@@ -36,6 +38,14 @@ public class Chat implements Serializable {
 
     public void setAvatar(int avatar) {
         this.avatar = avatar;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     // Create static data for testing

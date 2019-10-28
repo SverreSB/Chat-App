@@ -22,10 +22,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.model.DocumentCollections;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import javax.annotation.Nullable;
@@ -38,9 +44,11 @@ public class MessagesFragment extends Fragment {
 
     private final String TAG = "MESSAGEFRAGMENT";
     private ArrayList<Chat> chatList;
-    final public ArrayList<Chat> testingChatList = new ArrayList<>();
+    private ArrayList<String> chatIdList;
     private RecyclerView chatRecyclerView;
+    private ChatRecyclerAdapter chatRecyclerAdapter;
     private Button newMessage;
+    private User user;
 
     FirebaseFirestore db;
     FirebaseAuth mAuth;
@@ -54,20 +62,69 @@ public class MessagesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        db = FirebaseFirestore.getInstance();
+
+        chatList = new ArrayList<>();
+        chatIdList = new ArrayList<>();
+        user = new User();
         mAuth = FirebaseAuth.getInstance();
+        getCurrentUser();
+
+    }
+
+    private void getCurrentUser() {
+        db = FirebaseFirestore.getInstance();
+
         //Getting chats from current users list of chats and finds the chats by id
         db.collection("users")
                 .document(mAuth.getUid())
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        User user = documentSnapshot.toObject(User.class);
-                        handleActiveChats(user.getActiveChats());
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()) {
+                            user = task.getResult().toObject(User.class);
+                            createFireStoreReadListener();
+                        }
                     }
                 });
+    }
 
+    private void createFireStoreReadListener() {
+        ArrayList<String> activeChatsID = user.getActiveChats();
+        if(activeChatsID != null) {
+            for (final String chatID : activeChatsID) {
+                db = FirebaseFirestore.getInstance();
+                DocumentReference currentChatDocumentReference = db.collection("chats").document(chatID);
+                currentChatDocumentReference
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    Chat chat = task.getResult().toObject(Chat.class);
+                                    chat.setUid(chatID);
+                                    if(chatIdList.indexOf(chat.getUid()) == -1) {
+                                        chatIdList.add(chat.getUid());
+                                        chatList.add(chat);
+                                    }
+                                }
+                                chatRecyclerAdapter.notifyDataSetChanged();
+                            }
+                        });
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getCurrentUser();
+        createFireStoreReadListener();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
 
@@ -76,7 +133,7 @@ public class MessagesFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_messages, container, false);
 
-        chatList = Chat.getChats();
+        //chatList = Chat.getChats();
 
         // Initialize and set onClick for the 'new message' button
         newMessage = view.findViewById(R.id.buttonNewMessage);
@@ -100,7 +157,7 @@ public class MessagesFragment extends Fragment {
 
         chatRecyclerView = view.findViewById(R.id.chatRecyclerView);
 
-        chatRecyclerView.setAdapter(new ChatRecyclerAdapter(view.getContext(), chatList, new View.OnClickListener() {
+        chatRecyclerAdapter = new ChatRecyclerAdapter(view.getContext(), chatList, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Gets the position of the item that's clicked
@@ -113,29 +170,10 @@ public class MessagesFragment extends Fragment {
                 fullChat.putExtra("CHAT", clickedChat);
                 startActivity(fullChat);
             }
-        }));
+        });
 
-
+        chatRecyclerView.setAdapter(chatRecyclerAdapter);
         chatRecyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 1));
-    }
-
-    public void handleActiveChats(ArrayList<String> activeChatsID) {
-        for(String chats : activeChatsID) {
-            db = FirebaseFirestore.getInstance();
-            db.collection("chats")
-                    .document(chats)
-                    .get()
-                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            if(documentSnapshot.exists()) {
-                                Chat chat = documentSnapshot.toObject(Chat.class);
-                                testingChatList.add(chat);
-                            }
-
-                        }
-                    });
-        }
     }
 
 }
