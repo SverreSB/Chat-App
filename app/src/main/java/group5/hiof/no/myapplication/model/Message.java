@@ -8,6 +8,7 @@ import java.util.Date;
 
 public class Message {
 
+    private String uid;
     private String sender;
     private String receiver;
     @ServerTimestamp private Date timestamp;
@@ -30,6 +31,14 @@ public class Message {
     /*
      *  Getters and setters for field variables
      */
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public String getSender() {
         return sender;
