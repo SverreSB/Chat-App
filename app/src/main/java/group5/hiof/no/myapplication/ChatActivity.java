@@ -56,6 +56,7 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
 
     private List<Message> messageList;
+    private List<String> messageUidList;
 
 
 
@@ -159,6 +160,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void getChatMessages(Chat chat) {
         messageList = new ArrayList<>();
+        messageUidList = new ArrayList<>();
         CollectionReference chatMessageReference = db.collection("chats").document(chat.getUid()).collection("messages");
         chatMessageReference.orderBy("timestamp").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -170,11 +172,14 @@ public class ChatActivity extends AppCompatActivity {
                 for(DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()) {
                     QueryDocumentSnapshot documentSnapshot = documentChange.getDocument();
                     Message message = documentSnapshot.toObject(Message.class);
-                    messageList.add(message);
+                    String messageUid = documentSnapshot.getId();
+                    message.setUid(messageUid);
+                    if(!messageUidList.contains(messageUid)) {
+                        messageUidList.add(messageUid);
+                        messageList.add(message);
+                    }
                 }
-                for(Message message : messageList) {
-                    Log.d(TAG, message.getMessageContent());
-                }
+
                 messageRecyclerAdapter = new MessageRecyclerAdapter(ChatActivity.this, messageList);
                 recyclerView.setAdapter(messageRecyclerAdapter);
 
