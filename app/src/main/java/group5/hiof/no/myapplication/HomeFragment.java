@@ -9,11 +9,9 @@ import androidx.fragment.app.FragmentManager;
 import group5.hiof.no.myapplication.model.Chat;
 import group5.hiof.no.myapplication.model.User;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -23,12 +21,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -102,7 +96,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     // Gets all the current users chatpartners
     private void getChatPartners() {
-        Toast.makeText(getContext(), String.valueOf(user.getActiveChats().size()), Toast.LENGTH_LONG).show();
         activeChats = user.getActiveChats();
 
         if(activeChats != null) {
