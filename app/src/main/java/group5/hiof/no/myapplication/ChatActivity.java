@@ -182,6 +182,23 @@ public class ChatActivity extends AppCompatActivity {
 
                 messageRecyclerAdapter = new MessageRecyclerAdapter(ChatActivity.this, messageList);
                 recyclerView.setAdapter(messageRecyclerAdapter);
+                recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
+                recyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                    @Override
+                    public void onLayoutChange(View v,
+                                               int left, int top, int right, int bottom,
+                                               int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                        if (bottom < oldBottom) {
+                            recyclerView.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    recyclerView.smoothScrollToPosition(
+                                            recyclerView.getAdapter().getItemCount());
+                                }
+                            }, 100);
+                        }
+                    }
+                });
 
             }
         });
@@ -204,5 +221,6 @@ public class ChatActivity extends AppCompatActivity {
         message.put("timestamp", FieldValue.serverTimestamp());
         message.put("messageContent", messageField.getText().toString());
         chatMessageReference.add(message);
+        messageField.setText("");
     }
 }
