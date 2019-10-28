@@ -26,37 +26,20 @@
 
         <TextView
             android:id="@+id/chatPartnerName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="213dp"
+            android:layout_height="32dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="28dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="@string/profile"
-            android:textAlignment="center"
             android:textColor="#616161"
             android:textSize="20sp"
             android:textStyle="bold"
             tool:layout_constraintBottom_toBottomOf="parent"
-            tool:layout_constraintEnd_toStartOf="@id/buttonChatOptions"
             tool:layout_constraintStart_toEndOf="@id/chatPartnerAvatar"
-            tool:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/buttonChatOptions"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="80dp"
-            android:background="@android:color/transparent"
-            android:backgroundTint="@android:color/transparent"
-            android:textColor="@color/staticText"
-            android:textSize="14sp"
-            android:visibility="visible"
-            tool:icon="@drawable/ic_action_options"
-            tool:iconTint="@color/staticText"
-            tool:layout_constraintBottom_toBottomOf="parent"
-            tool:layout_constraintEnd_toEndOf="parent"
-            tool:layout_constraintStart_toEndOf="@id/chatPartnerName"
-            tool:layout_constraintTop_toTopOf="parent" />
+            tool:layout_constraintTop_toTopOf="parent"
+            tool:layout_constraintVertical_bias="0.488" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

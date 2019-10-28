@@ -14,6 +14,7 @@
     <string name="password_hint">Password</string>
     <string name="repeat_password_hint">Repeat Password</string>
     <string name="language">Choose language</string>
+    <string name="email_hint">Email</string>
 
     <!-- Fonts to be used as strings -->
     <string name="icon_arrow_left">&#xf060;</string>

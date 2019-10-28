@@ -25,6 +25,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Button goBackButton;
     private Button registerUserButton;
     private EditText usernameField;
+    private EditText emailField;
     private EditText passwordField;
     private EditText repeatPasswordField;
 
@@ -41,6 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
         goBackButton = findViewById(R.id.buttonGoBack);
         registerUserButton = findViewById(R.id.buttonRegisterUser);
 
+        emailField = findViewById(R.id.inputRegisterEmail);
         usernameField = findViewById(R.id.inputRegisterUsername);
         passwordField = findViewById(R.id.inputRegisterPassword);
         repeatPasswordField = findViewById(R.id.inputRegisterRepeatPassword);
@@ -63,9 +65,9 @@ public class RegisterActivity extends AppCompatActivity {
         registerUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = usernameField.getText().toString();
+                String email = emailField.getText().toString();
                 String password = passwordField.getText().toString();
-                String username = "test";
+                String username = usernameField.getText().toString();
                 createUser(email, username, password);
             }
         });

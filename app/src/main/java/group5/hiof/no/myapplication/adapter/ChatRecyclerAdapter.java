@@ -68,14 +68,11 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
 
         TextView chatPartner;
         ImageView partnerAvatar;
-        Button chatOptions;
 
         public ChatViewHolder(@NonNull View itemView) {
             super(itemView);
             chatPartner = itemView.findViewById(R.id.chatPartnerName);
             partnerAvatar = itemView.findViewById(R.id.chatPartnerAvatar);
-
-            chatOptions = itemView.findViewById(R.id.buttonChatOptions);
         }
 
         public void bind(Chat currentChat, View.OnClickListener clickListener) {
@@ -86,14 +83,6 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
 
             // Sets the onClickListener
             this.itemView.setOnClickListener(clickListener);
-
-            // Sets onClickListener for the 'options' button
-            chatOptions.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d("OPTIONS", "CLICKED");
-                }
-            });
         }
 
         private String getPartner(String uid, Chat chat) {
