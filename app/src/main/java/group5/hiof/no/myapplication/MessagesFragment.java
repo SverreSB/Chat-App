@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -47,8 +48,10 @@ public class MessagesFragment extends Fragment {
     private ArrayList<String> chatIdList;
     private RecyclerView chatRecyclerView;
     private ChatRecyclerAdapter chatRecyclerAdapter;
-    private Button newMessage;
     private User user;
+
+    private FloatingActionButton newMessage;
+
 
     FirebaseFirestore db;
     FirebaseAuth mAuth;
