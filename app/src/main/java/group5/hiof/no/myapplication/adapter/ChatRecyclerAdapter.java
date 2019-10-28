@@ -15,10 +15,15 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import group5.hiof.no.myapplication.R;
 import group5.hiof.no.myapplication.model.Chat;
+import group5.hiof.no.myapplication.model.User;
 
 public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapter.ChatViewHolder> {
 
@@ -78,20 +83,28 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         public void bind(Chat currentChat, View.OnClickListener clickListener) {
             // Fills the views with the given data
             partnerAvatar.setImageResource(currentChat.getAvatar());
-            String partner = getPartner(mAuth.getUid(), currentChat);
-            chatPartner.setText(partner);
+            getPartner(mAuth.getUid(), currentChat);
 
             // Sets the onClickListener
             this.itemView.setOnClickListener(clickListener);
         }
 
-        private String getPartner(String uid, Chat chat) {
+        private void getPartner(String uid, Chat chat) {
             for(String participant : chat.getParticipants()) {
                 if(!participant.equals(uid)) {
-                    return participant;
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection("users")
+                            .document(participant)
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    User user = task.getResult().toObject(User.class);
+                                    chatPartner.setText(user.getUsername());
+                                }
+                            });
                 }
             }
-            return "";
         }
     }
 }
