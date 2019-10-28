@@ -7,8 +7,9 @@
     <RelativeLayout
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:layout_alignParentRight="true"
+
+        android:padding="5dp"
+        android:layout_alignParentEnd="true"
         >
 
         <TextView
