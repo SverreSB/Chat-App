@@ -4,6 +4,10 @@ package group5.hiof.no.myapplication;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import group5.hiof.no.myapplication.adapter.MessageRecyclerAdapter;
 import group5.hiof.no.myapplication.model.Chat;
 import group5.hiof.no.myapplication.database.ChatDB;
 import group5.hiof.no.myapplication.model.Message;
@@ -29,19 +33,27 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChatActivity extends AppCompatActivity {
 
     private final String TAG = "CHAT ACTIVITY";
     private TextView chatPartner;
-    private TextView chatMessages;
     private EditText messageField;
     private Button exitChat;
     private Button sendMessageButton;
 
-    FirebaseAuth mAuth;
-    FirebaseFirestore db;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
-    ChatDB chatDB;
+    private ChatDB chatDB;
+    private MessageRecyclerAdapter messageRecyclerAdapter;
+    private RecyclerView recyclerView;
+
+    private List<Message> messageList;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +64,17 @@ public class ChatActivity extends AppCompatActivity {
 
         exitChat = findViewById(R.id.buttonExitChat);
         chatPartner = findViewById(R.id.chatPartner);
-        chatMessages = findViewById(R.id.textBoxMessages);
         sendMessageButton = findViewById(R.id.buttonSendMessage);
         messageField = findViewById(R.id.inputMessage);
+
+        // Setting up recycler view for messages
+        recyclerView = findViewById(R.id.messageRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+
 
         db = FirebaseFirestore.getInstance();
 
@@ -134,8 +154,8 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void getChatMessages(Chat chat) {
+        messageList = new ArrayList<>();
         CollectionReference chatMessageReference = db.collection("chats").document(chat.getUid()).collection("messages");
-
         chatMessageReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -146,8 +166,10 @@ public class ChatActivity extends AppCompatActivity {
                 for(DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()) {
                     QueryDocumentSnapshot documentSnapshot = documentChange.getDocument();
                     Message message = documentSnapshot.toObject(Message.class);
-                    chatMessages.append(message.getMessageContent() + "\n");
+                    messageList.add(message);
                 }
+                messageRecyclerAdapter = new MessageRecyclerAdapter(ChatActivity.this, messageList);
+                recyclerView.setAdapter(messageRecyclerAdapter);
 
             }
         });

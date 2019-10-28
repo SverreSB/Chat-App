@@ -97,9 +97,9 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         }
 
         private String getPartner(String uid, Chat chat) {
-            for(String participants : chat.getParticipants()) {
-                if(!participants.equals(uid)) {
-                    return participants;
+            for(String participant : chat.getParticipants()) {
+                if(!participant.equals(uid)) {
+                    return participant;
                 }
             }
             return "";
