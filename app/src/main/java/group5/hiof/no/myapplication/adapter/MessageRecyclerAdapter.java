@@ -18,7 +18,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 
 import group5.hiof.no.myapplication.R;
-import group5.hiof.no.myapplication.model.Chat;
 import group5.hiof.no.myapplication.model.Message;
 
 public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecyclerAdapter.MessageViewHolder> {
@@ -55,7 +54,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         Message message = data.get(position);
-
+        Log.d("MESSAGE_RECYCLER_ADP", message.getMessageContent());
         holder.show_message.setText(message.getMessageContent());
     }
 

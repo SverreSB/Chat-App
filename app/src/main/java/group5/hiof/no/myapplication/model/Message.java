@@ -1,32 +1,30 @@
 package group5.hiof.no.myapplication.model;
 
+import com.google.firebase.firestore.ServerTimestamp;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Message {
 
     private String sender;
     private String receiver;
-    private String timestamp;
+    @ServerTimestamp private Date timestamp;
     private String messageContent;
 
     public Message() {
 
     }
 
-    public Message(String sender, String receiver, String messageContent) {
+    public Message(String sender, String receiver, Date timestamp, String messageContent) {
         this.sender = sender;
         this.receiver = receiver;
-        this.timestamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+        this.timestamp = timestamp;
         this.messageContent = messageContent;
     }
 
-    public Message(String sender, String receiver, String messageContent, String timestamp) {
-        this.sender = sender;
-        this.receiver = receiver;
-        this.messageContent = messageContent;
-        this.timestamp = timestamp;
-    }
+
 
 
     /*
@@ -49,11 +47,11 @@ public class Message {
         this.receiver = receiver;
     }
 
-    public String getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 

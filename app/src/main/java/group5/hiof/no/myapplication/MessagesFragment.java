@@ -174,7 +174,6 @@ public class MessagesFragment extends Fragment {
                 startActivity(fullChat);
             }
         });
-
         chatRecyclerView.setAdapter(chatRecyclerAdapter);
         chatRecyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 1));
     }

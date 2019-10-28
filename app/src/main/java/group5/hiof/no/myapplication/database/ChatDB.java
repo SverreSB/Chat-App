@@ -15,6 +15,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import group5.hiof.no.myapplication.R;
@@ -61,7 +63,13 @@ public class ChatDB {
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
-                                    Message newMessage = new Message(currentUserID, receiver, message);
+                                    //Message newMessage = new Message(currentUserID, receiver, message);
+                                    Map<String, Object> newMessage = new HashMap<>();
+                                    newMessage.put("sender", sender);
+                                    newMessage.put("receiver", receiver);
+                                    newMessage.put("timestamp", FieldValue.serverTimestamp());
+                                    newMessage.put("messageContent", message);
+
                                     documentReference.collection("messages").add(newMessage);
 
                                     DocumentReference currentUserDocument = db.collection("users").document(mAuth.getUid());

@@ -28,17 +28,21 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity {
 
-    private final String TAG = "CHAT ACTIVITY";
+    private final String TAG = "CHAT_ACTIVITY";
     private TextView chatPartner;
     private EditText messageField;
     private Button exitChat;
@@ -156,7 +160,7 @@ public class ChatActivity extends AppCompatActivity {
     private void getChatMessages(Chat chat) {
         messageList = new ArrayList<>();
         CollectionReference chatMessageReference = db.collection("chats").document(chat.getUid()).collection("messages");
-        chatMessageReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        chatMessageReference.orderBy("timestamp").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
@@ -167,6 +171,9 @@ public class ChatActivity extends AppCompatActivity {
                     QueryDocumentSnapshot documentSnapshot = documentChange.getDocument();
                     Message message = documentSnapshot.toObject(Message.class);
                     messageList.add(message);
+                }
+                for(Message message : messageList) {
+                    Log.d(TAG, message.getMessageContent());
                 }
                 messageRecyclerAdapter = new MessageRecyclerAdapter(ChatActivity.this, messageList);
                 recyclerView.setAdapter(messageRecyclerAdapter);
@@ -185,7 +192,12 @@ public class ChatActivity extends AppCompatActivity {
                 receiver = participants;
             }
         }
-        Message message = new Message(sender, receiver, messageField.getText().toString());
+        //Message message = new Message(sender, receiver, FieldValue.serverTimestamp(), messageField.getText().toString());
+        Map<String, Object> message = new HashMap<>();
+        message.put("sender", sender);
+        message.put("receiver", receiver);
+        message.put("timestamp", FieldValue.serverTimestamp());
+        message.put("messageContent", messageField.getText().toString());
         chatMessageReference.add(message);
     }
 }
