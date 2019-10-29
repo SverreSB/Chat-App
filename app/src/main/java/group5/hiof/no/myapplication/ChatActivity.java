@@ -92,6 +92,22 @@ public class ChatActivity extends AppCompatActivity {
         messageRecyclerAdapter = new MessageRecyclerAdapter(ChatActivity.this, messageList);
         recyclerView.setAdapter(messageRecyclerAdapter);
 
+        recyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v,
+                                       int left, int top, int right, int bottom,
+                                       int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (bottom < oldBottom) {
+                    recyclerView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            recyclerView.smoothScrollToPosition(
+                                    recyclerView.getAdapter().getItemCount());
+                        }
+                    }, 100);
+                }
+            }
+        });
 
         // Getting intent containing chat
         chat = (Chat) getIntent().getSerializableExtra("CHAT");
@@ -173,7 +189,7 @@ public class ChatActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 if(task.isSuccessful()) {
                                     User user = task.getResult().toObject(User.class);
-                                    chatPartner.setText(user.getEmail());
+                                    chatPartner.setText(user.getUsername());
                                 }
                             }
                         });
@@ -204,22 +220,6 @@ public class ChatActivity extends AppCompatActivity {
 
                 messageRecyclerAdapter.notifyDataSetChanged();
                 recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
-                recyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                    @Override
-                    public void onLayoutChange(View v,
-                                               int left, int top, int right, int bottom,
-                                               int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                        if (bottom < oldBottom) {
-                            recyclerView.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    recyclerView.smoothScrollToPosition(
-                                            recyclerView.getAdapter().getItemCount());
-                                }
-                            }, 100);
-                        }
-                    }
-                });
 
             }
         });
