@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -54,7 +53,6 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         Message message = data.get(position);
-        Log.d("MESSAGE_RECYCLER_ADP", message.getMessageContent());
         holder.show_message.setText(message.getMessageContent());
     }
 

@@ -72,25 +72,31 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         getActiveChats();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActiveChats();
+    }
 
     // Gets all the active chats for the logged in user
     private void getActiveChats() {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         String currentUserUid = mAuth.getUid();
-
-        db.collection("users")
-                .document(currentUserUid)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()) {
-                            user = task.getResult().toObject(User.class);
-                            getChatPartners();
+        if(currentUserUid != null) {
+            db.collection("users")
+                    .document(currentUserUid)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                user = task.getResult().toObject(User.class);
+                                getChatPartners();
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 
 

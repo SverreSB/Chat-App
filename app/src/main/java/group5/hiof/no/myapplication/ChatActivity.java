@@ -31,6 +31,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -57,6 +58,9 @@ public class ChatActivity extends AppCompatActivity {
 
     private List<Message> messageList;
     private List<String> messageUidList;
+    private Chat chat;
+
+    private ListenerRegistration firebaseListenerRegistration;
 
 
 
@@ -65,8 +69,15 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        // Initializing Firebase variables
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
+        // Initializing list of messages
+        messageList = new ArrayList<>();
+        messageUidList = new ArrayList<>();
+
+        // Initializing views and buttons
         exitChat = findViewById(R.id.buttonExitChat);
         chatPartner = findViewById(R.id.chatPartner);
         sendMessageButton = findViewById(R.id.buttonSendMessage);
@@ -78,12 +89,25 @@ public class ChatActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
+        messageRecyclerAdapter = new MessageRecyclerAdapter(ChatActivity.this, messageList);
+        recyclerView.setAdapter(messageRecyclerAdapter);
 
 
+        // Getting intent containing chat
+        chat = (Chat) getIntent().getSerializableExtra("CHAT");
 
-        db = FirebaseFirestore.getInstance();
+        exitChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
-        final Chat chat = (Chat) getIntent().getSerializableExtra("CHAT");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         if(chat != null) {
             String sender = mAuth.getCurrentUser().getUid();
@@ -108,12 +132,12 @@ public class ChatActivity extends AppCompatActivity {
                     .document(userId)
                     .get()
                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    String mail = documentSnapshot.getString("email");
-                    chatPartner.setText(mail);
-                }
-            });
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            String username = documentSnapshot.getString("username");
+                            chatPartner.setText(username);
+                        }
+                    });
 
             sendMessageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -126,14 +150,14 @@ public class ChatActivity extends AppCompatActivity {
 
 
         }
+    }
 
-        exitChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(chat != null) {
+            firebaseListenerRegistration.remove();
+        }
     }
 
     private void setHeaderText(String sender, Chat chat) {
@@ -159,10 +183,8 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void getChatMessages(Chat chat) {
-        messageList = new ArrayList<>();
-        messageUidList = new ArrayList<>();
         CollectionReference chatMessageReference = db.collection("chats").document(chat.getUid()).collection("messages");
-        chatMessageReference.orderBy("timestamp").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        firebaseListenerRegistration = chatMessageReference.orderBy("timestamp").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
@@ -180,8 +202,7 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 }
 
-                messageRecyclerAdapter = new MessageRecyclerAdapter(ChatActivity.this, messageList);
-                recyclerView.setAdapter(messageRecyclerAdapter);
+                messageRecyclerAdapter.notifyDataSetChanged();
                 recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
                 recyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                     @Override
