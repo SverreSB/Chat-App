@@ -2,13 +2,11 @@ package group5.hiof.no.myapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import group5.hiof.no.myapplication.database.UserDB;
 import group5.hiof.no.myapplication.model.User;
 
-import android.content.Intent;
-import android.graphics.Typeface;
-import android.location.Location;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,14 +25,14 @@ public class RegisterActivity extends AppCompatActivity {
     private Button goBackButton;
     private Button registerUserButton;
     private EditText usernameField;
+    private EditText emailField;
     private EditText passwordField;
     private EditText repeatPasswordField;
 
     private FirebaseAuth mAuth;
-    private double lat;
-    private double lng;
     private String id;
-    private String mail;
+    private UserDB userDB;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +42,12 @@ public class RegisterActivity extends AppCompatActivity {
         goBackButton = findViewById(R.id.buttonGoBack);
         registerUserButton = findViewById(R.id.buttonRegisterUser);
 
+        emailField = findViewById(R.id.inputRegisterEmail);
         usernameField = findViewById(R.id.inputRegisterUsername);
         passwordField = findViewById(R.id.inputRegisterPassword);
         repeatPasswordField = findViewById(R.id.inputRegisterRepeatPassword);
 
         mAuth = FirebaseAuth.getInstance();
-
-        lat = MainActivity.LATITUDE;
-        lng = MainActivity.LONGITUDE;
-        String temp = String.valueOf(lat) + "\n" + String.valueOf(lng);
-        Toast.makeText(this, temp, Toast.LENGTH_LONG).show();
 
         // Button for going back to previous activity. This should be returning to login screen
         goBackButton.setOnClickListener(new View.OnClickListener() {
@@ -71,9 +65,10 @@ public class RegisterActivity extends AppCompatActivity {
         registerUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = usernameField.getText().toString();
+                String email = emailField.getText().toString();
                 String password = passwordField.getText().toString();
-                createUser(email, password);
+                String username = usernameField.getText().toString();
+                createUser(email, username, password);
             }
         });
 
@@ -87,7 +82,7 @@ public class RegisterActivity extends AppCompatActivity {
         isLoggedIn(currentUser);
     }
 
-    private void createUser(final String email, String password) {
+    private void createUser(final String email, final String username, String password) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -95,16 +90,18 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Not working", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    id = task.getResult().getUser().getUid();
-                    mail = email;
-                    Toast.makeText(RegisterActivity.this, id, Toast.LENGTH_LONG).show();
+                    id = mAuth.getUid();
+                    userDB = new UserDB();
                 }
             }
         }).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                User temp = new User(email, lat, lng, id);
-                FirebaseAuth.getInstance().signOut();
+                double latitude = MainActivity.LATITUDE;
+                double longitude = MainActivity.LONGITUDE;
+                String avatar = "picture.jpg";
+                User user = new User(username, email, avatar, latitude, longitude);
+                userDB.writeUserToDB(user, id);
                 finish();
             }
         });

@@ -1,66 +1,67 @@
 package group5.hiof.no.myapplication.model;
 
-import java.util.UUID;
+import com.google.firebase.firestore.ServerTimestamp;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Message {
 
-    private UUID messageID;
-    private User sender;
-    private User receiver;
-    private String timestamp;
-    private String format;
+    private String uid;
+    private String sender;
+    private String receiver;
+    @ServerTimestamp private Date timestamp;
     private String messageContent;
 
-    public Message(User sender, User receiver, String format, String content) {
+    public Message() {
+
+    }
+
+    public Message(String sender, String receiver, Date timestamp, String messageContent) {
         this.sender = sender;
         this.receiver = receiver;
-        this.format = format;
-        this.messageContent = content;
+        this.timestamp = timestamp;
+        this.messageContent = messageContent;
     }
+
+
 
 
     /*
      *  Getters and setters for field variables
      */
 
-    public UUID getMessageID() {
-        return messageID;
+    public String getUid() {
+        return uid;
     }
 
-    public void setMessageID(UUID messageID) {
-        this.messageID = messageID;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public User getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(User sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 
-    public User getReceiver() {
+    public String getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(User receiver) {
+    public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
 
-    public String getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
     }
 
     public String getMessageContent() {
