@@ -58,7 +58,6 @@ public class ChatDB {
 
                                    if(!userID.equals(currentUserID) && !user.getFriends().contains(userID)) {
                                        userList.add(userID);
-                                       System.out.println(userID);
                                    }
                                }
 

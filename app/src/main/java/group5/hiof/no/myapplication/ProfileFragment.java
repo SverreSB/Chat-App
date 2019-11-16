@@ -27,11 +27,12 @@ import com.google.firebase.auth.FirebaseUser;
 public class ProfileFragment extends Fragment {
 
     // UI references
-    EditText oldPasswordField;
+    /*EditText oldPasswordField;
     EditText newPasswordField;
     EditText repeatPasswordField;
+    Button changePasswordButton;*/
     Button signOutButton;
-    Button changePasswordButton;
+
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -44,13 +45,16 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         // Assigning values to UI references
+
+        signOutButton = view.findViewById(R.id.buttonSignOut);
+
+
+        // When pressing 'Change Password' button
+        /*
+        changePasswordButton = view.findViewById(R.id.buttonChangePassword);
         oldPasswordField = view.findViewById(R.id.profileOldPassword);
         newPasswordField = view.findViewById(R.id.profileNewPassword);
         repeatPasswordField = view.findViewById(R.id.profileRepeatPassword);
-        signOutButton = view.findViewById(R.id.buttonSignOut);
-        changePasswordButton = view.findViewById(R.id.buttonChangePassword);
-
-        // When pressing 'Change Password' button
         changePasswordButton.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
@@ -69,7 +73,7 @@ public class ProfileFragment extends Fragment {
                    Toast.makeText(getContext(), "Passwords didn't match", Toast.LENGTH_LONG).show();
                }
            }
-        });
+        });*/
 
         // When pressing 'Sign Out' button
         signOutButton.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +82,7 @@ public class ProfileFragment extends Fragment {
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
+
             }
         });
 
