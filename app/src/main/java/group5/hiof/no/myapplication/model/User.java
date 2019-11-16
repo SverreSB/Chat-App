@@ -10,6 +10,8 @@ public class User {
     private double latitude;
     private double longitude;
     private ArrayList<String> activeChats;
+    private ArrayList<String> friends;
+
 
     public User() {
         //Empty constructor
@@ -23,6 +25,7 @@ public class User {
         this.longitude = longitude;
 
         this.activeChats = new ArrayList<>();
+        this.friends = new ArrayList<>();
     }
 
     /*
@@ -77,6 +80,14 @@ public class User {
 
     public void setActiveChats(ArrayList<String> activeChats) {
         this.activeChats = activeChats;
+    }
+
+    public ArrayList<String> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(ArrayList<String> friends) {
+        this.friends = friends;
     }
 
     public void addChat(String id) {

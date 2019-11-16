@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import group5.hiof.no.myapplication.adapter.MessageRecyclerAdapter;
-import group5.hiof.no.myapplication.model.Chat;
 import group5.hiof.no.myapplication.database.ChatDB;
+import group5.hiof.no.myapplication.model.Chat;
 import group5.hiof.no.myapplication.model.Message;
 import group5.hiof.no.myapplication.model.User;
 
@@ -36,7 +36,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,6 +91,7 @@ public class ChatActivity extends AppCompatActivity {
         messageRecyclerAdapter = new MessageRecyclerAdapter(ChatActivity.this, messageList);
         recyclerView.setAdapter(messageRecyclerAdapter);
 
+        // Changes position of text when keyboard is opened in chat activity
         recyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v,

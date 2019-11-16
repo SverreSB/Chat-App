@@ -35,53 +35,75 @@ public class ChatDB {
     public void createChat(final String sender, final String message) {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        CollectionReference userCollection = db.collection("users");
+        final CollectionReference userCollection = db.collection("users");
+        final String currentUserID = mAuth.getUid();
 
 
-        //Fining a random receiver before creating a chat document in chats collection
-        userCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        // First finds current user, and then finds users that is not currently in friends array. After it assigns a random friend
+        userCollection.document(currentUserID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                final String currentUserID = mAuth.getUid();
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+               if(documentSnapshot.exists()) {
+                   final User user = documentSnapshot.toObject(User.class);
 
-                // Finds every user in DB and puts it into array list, except for current user.
-                if(task.isSuccessful()) {
-                    ArrayList<String> userList = new ArrayList<>();
-                    for(DocumentSnapshot documentSnapshot : task.getResult()) {
-                        String userID = documentSnapshot.getId();
-                        if(!userID.equals(currentUserID)) {
-                            userList.add(userID);
-                        }
-                    }
+                   //Fining a random receiver before creating a chat document in chats collection
+                   userCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                       @Override
+                       public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                           // Finds every user in DB and puts it into array list, except for current user.
+                           if(task.isSuccessful()) {
+                               ArrayList<String> userList = new ArrayList<>();
+                               for(DocumentSnapshot documentSnapshot : task.getResult()) {
+                                   String userID = documentSnapshot.getId();
 
-                    final String receiver = userList.get(new Random().nextInt(userList.size()));
-                    Chat chat = new Chat(sender, receiver, R.drawable.ic_action_profile);
+                                   if(!userID.equals(currentUserID) && !user.getFriends().contains(userID)) {
+                                       userList.add(userID);
+                                       System.out.println(userID);
+                                   }
+                               }
 
-                    // Creates chat collection and adds message collection within chat after creation. Updates user's activeChats
-                    db.collection("chats")
-                            .add(chat)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    //Message newMessage = new Message(currentUserID, receiver, message);
-                                    Map<String, Object> newMessage = new HashMap<>();
-                                    newMessage.put("sender", sender);
-                                    newMessage.put("receiver", receiver);
-                                    newMessage.put("timestamp", FieldValue.serverTimestamp());
-                                    newMessage.put("messageContent", message);
+                               // No more available friends, returning
+                               if(userList.isEmpty()) {
+                                   return;
+                               }
 
-                                    documentReference.collection("messages").add(newMessage);
+                               final String receiver = userList.get(new Random().nextInt(userList.size()));
+                               Chat chat = new Chat(sender, receiver, R.drawable.ic_action_profile);
 
-                                    DocumentReference currentUserDocument = db.collection("users").document(mAuth.getUid());
-                                    DocumentReference receiverUserDocument = db.collection("users").document(receiver);
-                                    currentUserDocument.update("activeChats", FieldValue.arrayUnion(documentReference.getId()));
-                                    receiverUserDocument.update("activeChats", FieldValue.arrayUnion(documentReference.getId()));
+                               // Creates chat collection and adds message collection within chat after creation. Updates user's activeChats
+                               db.collection("chats")
+                                       .add(chat)
+                                       .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                           @Override
+                                           public void onSuccess(DocumentReference documentReference) {
+                                               //Message newMessage = new Message(currentUserID, receiver, message);
+                                               Map<String, Object> newMessage = new HashMap<>();
+                                               newMessage.put("sender", sender);
+                                               newMessage.put("receiver", receiver);
+                                               newMessage.put("timestamp", FieldValue.serverTimestamp());
+                                               newMessage.put("messageContent", message);
 
-                                }
-                            });
-                }
+                                               documentReference.collection("messages").add(newMessage);
+
+                                               DocumentReference currentUserDocument = db.collection("users").document(mAuth.getUid());
+                                               DocumentReference receiverUserDocument = db.collection("users").document(receiver);
+
+                                               // Updates activeChats array with chatId for both sender and receiver
+                                               currentUserDocument.update("activeChats", FieldValue.arrayUnion(documentReference.getId()));
+                                               receiverUserDocument.update("activeChats", FieldValue.arrayUnion(documentReference.getId()));
+
+                                               // Updates friends array in user document for both sender and receiver
+                                               currentUserDocument.update("friends", FieldValue.arrayUnion(receiver));
+                                               receiverUserDocument.update("friends", FieldValue.arrayUnion(sender));
+                                           }
+                                       });
+                           }
+                       }
+                   });
+               }
             }
         });
+
     }
 
 }
