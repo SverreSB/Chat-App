@@ -43,12 +43,10 @@ import group5.hiof.no.myapplication.model.User;
 public class ProfileFragment extends Fragment {
 
     // UI references
-    /*EditText oldPasswordField;
-    EditText newPasswordField;
-    EditText repeatPasswordField;
-    Button changePasswordButton;*/
+    Button changePasswordButton;
     Button signOutButton;
     Button deleteAccountButton;
+
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
@@ -68,34 +66,17 @@ public class ProfileFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
 
         // Assigning values to UI references
+        changePasswordButton = view.findViewById(R.id.buttonOpenChangePassword);
         signOutButton = view.findViewById(R.id.buttonSignOut);
         deleteAccountButton = view.findViewById(R.id.buttonDeleteAccount);
 
-        // When pressing 'Change Password' button
-        /*
-        changePasswordButton = view.findViewById(R.id.buttonChangePassword);
-        oldPasswordField = view.findViewById(R.id.profileOldPassword);
-        newPasswordField = view.findViewById(R.id.profileNewPassword);
-        repeatPasswordField = view.findViewById(R.id.profileRepeatPassword);
         changePasswordButton.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               // Getting text from input fields
-               String oldPassword = oldPasswordField.getText().toString();
-               String newPassword = newPasswordField.getText().toString();
-               String repeatPassword = repeatPasswordField.getText().toString();
-
-               if (oldPassword.equals(newPassword)) {
-                   Toast.makeText(getContext(), "Can't change to same password", Toast.LENGTH_LONG).show();
-               }
-               else if (newPassword.equals(repeatPassword)) {
-                   reauthenticateAndUpdatePassword(oldPassword, newPassword, repeatPassword);
-               }
-               else {
-                   Toast.makeText(getContext(), "Passwords didn't match", Toast.LENGTH_LONG).show();
-               }
-           }
-        });*/
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // When pressing 'Sign Out' button
         signOutButton.setOnClickListener(new View.OnClickListener() {
@@ -154,9 +135,6 @@ public class ProfileFragment extends Fragment {
 
                     }
                 });
-                // Look through activeChats array in sender and receiver and remove chat
-
-                // Delete user
             }
         });
 
@@ -205,38 +183,4 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
-
-
-    /*private void reauthenticateAndUpdatePassword(String oldPassword, final String newPassword, String repeatPassword) {
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String email = user.getEmail();
-
-        AuthCredential credential = EmailAuthProvider.getCredential(email, oldPassword);
-
-        user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-           @Override
-           public void onComplete(@NonNull Task<Void> task) {
-               if (task.isSuccessful()) {
-                   updatePassword(user, newPassword);
-               }
-               else {
-                   Toast.makeText(getContext(), "Invalid old password", Toast.LENGTH_LONG).show();
-               }
-           }
-        });
-    }*/
-
-    /*private void updatePassword(FirebaseUser user, String password) {
-        user.updatePassword(password).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(getContext(), "Password is updated", Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Toast.makeText(getContext(), "Couldn't update password", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }*/
 }
