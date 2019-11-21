@@ -33,4 +33,5 @@
     <string name="new_message">New Message</string>
     <string name="write_message">Write Message...</string>
     <string name="send">Send</string>
+    <string name="delete_account">Delete Account</string>
 </resources>

@@ -8,4 +8,5 @@
     <color name="staticText">#AA66CC</color>
 
     <color name="colorAccent">#D81B60</color>
+    <color name="deleteAccount">#da2d2d</color>
 </resources>
