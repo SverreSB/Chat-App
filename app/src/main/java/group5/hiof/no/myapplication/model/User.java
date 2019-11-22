@@ -75,6 +75,9 @@ public class User {
     }
 
     public ArrayList<String> getActiveChats() {
+        if(activeChats == null) {
+            return null;
+        }
         return activeChats;
     }
 
