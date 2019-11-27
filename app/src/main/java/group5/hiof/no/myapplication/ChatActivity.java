@@ -161,6 +161,7 @@ public class ChatActivity extends AppCompatActivity {
                     chatDB = new ChatDB();
                     String message = messageField.getText().toString();
                     chatDB.createChat(userId, message);
+                    finish();
                 }
             });
 

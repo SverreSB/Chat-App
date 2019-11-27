@@ -1,11 +1,14 @@
 package group5.hiof.no.myapplication;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,50 +94,44 @@ public class ProfileFragment extends Fragment {
         deleteAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Testing delete account", Toast.LENGTH_LONG).show();
-                final CollectionReference userReference = db.collection("users");
-                final CollectionReference chatReference = db.collection("chats");
                 final String userID = mAuth.getUid();
 
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                final EditText input = new EditText(getContext());
+                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                input.setHint("Password");
+
                 // Validate password
+                builder.setTitle("Delete Account");
+                builder.setMessage("Are you sure you want to delete account? Write in your password and press \"OK\" to finish");
+                builder.setView(input);
 
-                // Look through friends in both sender and receiver to remove from array
-                userReference.document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            User user = task.getResult().toObject(User.class);
-                            for (final String chatID : user.getActiveChats()) {
-                                chatReference.document(chatID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                // Listener for when pressing "OK". Action is done to delete account within this listener
+                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        String email = user.getEmail();
+
+                        AuthCredential credential = EmailAuthProvider.getCredential(email, input.getText().toString());
+
+                        user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
-                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        if(task.isSuccessful()) {
-                                            Chat currentChat = task.getResult().toObject(Chat.class);
-
-                                            int indexOfCurrentUser = currentChat.getParticipants().indexOf(userID);
-                                            int indexOfFriend;
-
-                                            if (indexOfCurrentUser == 1) {
-                                                indexOfFriend = 0;
-                                            }
-                                            else {
-                                                indexOfFriend = 1;
-                                            }
-
-                                            String friendID = currentChat.getParticipants().get(indexOfFriend);
-                                            deleteFriendFromList(userID, friendID);
-                                            deleteChatFromList(chatID, friendID);
-                                            deleteMessages(chatID);
-                                            deleteChat(chatID);
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(getContext(), "Deleting account in progress\nYou will soon be logged out", Toast.LENGTH_LONG).show();
+                                            deleteAccount(userID);
+                                        }
+                                        else {
+                                            Toast.makeText(getContext(), "Invalid old password", Toast.LENGTH_LONG).show();
                                         }
                                     }
                                 });
                             }
-                            deleteUser(userID);
-                        }
+                        });
 
-                    }
-                });
+                        // Cancels alert dialog when pressing "cancel"
+                builder.setNegativeButton(android.R.string.no, null);
+                builder.show();
             }
         });
 
@@ -176,10 +173,54 @@ public class ProfileFragment extends Fragment {
                 mAuth.getCurrentUser().delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        Toast.makeText(getContext(), "Account is successfully deleted", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(getActivity(), LoginActivity.class);
                         startActivity(intent);
                     }
                 });
+            }
+        });
+    }
+
+    private void deleteAccount(final String userID) {
+        final CollectionReference userReference = db.collection("users");
+        final CollectionReference chatReference = db.collection("chats");
+
+        // Look through friends in both sender and receiver to remove from array
+        userReference.document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    User user = task.getResult().toObject(User.class);
+                    for (final String chatID : user.getActiveChats()) {
+                        chatReference.document(chatID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if(task.isSuccessful()) {
+                                    Chat currentChat = task.getResult().toObject(Chat.class);
+
+                                    int indexOfCurrentUser = currentChat.getParticipants().indexOf(userID);
+                                    int indexOfFriend;
+
+                                    if (indexOfCurrentUser == 1) {
+                                        indexOfFriend = 0;
+                                    }
+                                    else {
+                                        indexOfFriend = 1;
+                                    }
+
+                                    String friendID = currentChat.getParticipants().get(indexOfFriend);
+                                    deleteFriendFromList(userID, friendID);
+                                    deleteChatFromList(chatID, friendID);
+                                    deleteMessages(chatID);
+                                    deleteChat(chatID);
+                                }
+                            }
+                        });
+                    }
+                    deleteUser(userID);
+                }
+
             }
         });
     }

@@ -102,7 +102,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     // Gets all the current users chatpartners
     private void getChatPartners() {
-        activeChats = user.getActiveChats();
+        if(user != null) {
+            activeChats = user.getActiveChats();
+        }
+
 
         if(activeChats != null) {
             for(String chat : activeChats) {
